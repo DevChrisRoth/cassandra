@@ -1,21 +1,22 @@
+import random
+
 import ollama
 from PIL import Image
 
 # Function to load all pictures from "screens_backup" directory
 images = []
 
+# Load image paths into images list
+# Currently limited to 1 image due to LLM limitations
 def load_images() -> None:
     images.clear()
-    for i in range(1):
-        images.append(f"screens/sc-{i}-compressed.png")
+    # Generate random number between 0 and 4
+    random_image_index_number = random.randint(0, 4)
+    images.append(f"screens/sc-{random_image_index_number}-compressed.png")
     print("==>Images loaded")
 
-def vision() -> str:
+def vision_stream() -> str:
     load_images()
-
-    #Debugging
-    #image = Image.open(images[0])
-    #image.show()
 
     response = ollama.chat(
        model="llama3.2-vision",
@@ -25,9 +26,11 @@ def vision() -> str:
                 "content": "Was kann man auf diesen Bildern erkennen?",
                 "images": images
             }
-        ]
+        ],
+        stream=True
     )
-    return response['message']['content']
+    for chunk in response:
+        # Replacing the print statement with a function to return the content as audio
+        print(chunk['message']['content'], end='', flush=True)
 
-print(vision())
-
+vision_stream()
