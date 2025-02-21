@@ -1,7 +1,7 @@
 import random
-
 import ollama
 from PIL import Image
+import tts
 
 # Function to load all pictures from "screens_backup" directory
 images = []
@@ -32,5 +32,6 @@ def vision_stream() -> str:
     for chunk in response:
         # Replacing the print statement with a function to return the content as audio
         print(chunk['message']['content'], end='', flush=True)
+        tts.speak(chunk['message']['content'])
 
 vision_stream()
