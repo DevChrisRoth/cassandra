@@ -7,7 +7,6 @@ engine.setProperty("rate", 175)  # Geschwindigkeit der Sprachausgabe (Standard: 
 
 # Text-to-Speech Ausgabe
 def speak(text: str) -> None:
-    # Normalizer currently not working as expected
     text = normalizer.normalize_text(text)
     engine.say(text)
     engine.runAndWait()
