@@ -1,5 +1,6 @@
 from num2words import num2words
-
+import re
 #Normalizes the text for tts
 def normalize_text(text: str) -> str:
-    return num2words(text, lang='de')
+    output_string = re.sub(r'(\d+)', lambda m: num2words(m.group(), lang='de'), text)
+    return output_string
